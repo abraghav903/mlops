@@ -162,7 +162,30 @@ cd infra/aws-ecs
 terraform init
 terraform plan \
   -var="container_image=<image-uri>" \
-  -var="execution_role_arn=<ecs-task-execution-role-arn>"
+  -var="execution_role_arn=<ecs-task-execution-role-arn>" \
+  -var='subnet_ids=["subnet-123","subnet-456"]' \
+  -var='security_group_ids=["sg-123"]'
 ```
 
-It creates an ECR repository, CloudWatch log group, ECS cluster, and task definition. In a real environment, add VPC, subnets, security groups, load balancer, and ECS service resources based on the target AWS account network setup.
+It creates an ECR repository, CloudWatch log group, ECS cluster, ECS task definition, and ECS service. In a real environment, add a load balancer and domain name if the API must be publicly reachable through HTTPS.
+
+If you do not have an AWS account, do not run `terraform apply`. For this assignment, it is acceptable to include IaC and explain that it is ready for an AWS account with existing VPC subnet IDs, security group IDs, and an ECS task execution role.
+
+## Linux Server Deployment
+
+On a Linux server with Docker installed:
+
+```bash
+git clone <your-repo-url>
+cd <your-repo-name>
+docker compose up --build -d
+```
+
+Verify:
+
+```bash
+curl http://localhost:8000/health
+curl http://localhost:8000/metrics
+```
+
+If the server has a firewall, allow ports `8000` for the API and `9090` for Prometheus.

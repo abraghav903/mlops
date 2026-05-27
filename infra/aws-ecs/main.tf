@@ -61,3 +61,17 @@ resource "aws_ecs_task_definition" "api" {
     }
   ])
 }
+
+resource "aws_ecs_service" "api" {
+  name            = var.service_name
+  cluster         = aws_ecs_cluster.api.id
+  task_definition = aws_ecs_task_definition.api.arn
+  desired_count   = var.desired_count
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets          = var.subnet_ids
+    security_groups  = var.security_group_ids
+    assign_public_ip = var.assign_public_ip
+  }
+}
