@@ -24,8 +24,23 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push image
+        id: build
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+
+      - name: Summarize release result
+        if: always()
+        run: |
+          {
+            echo "## Release Result"
+            echo ""
+            echo "| Item | Value |"
+            echo "| --- | --- |"
+            echo "| Status | ${{ steps.build.outcome }} |"
+            echo "| Image | \`ghcr.io/${{ github.repository }}:${{ github.ref_name }}\` |"
+            echo "| Digest | \`${{ steps.build.outputs.digest }}\` |"
+            echo "| Tag | \`${{ github.ref_name }}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
