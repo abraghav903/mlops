@@ -169,15 +169,15 @@ terraform plan \
 
 It creates an ECR repository, CloudWatch log group, ECS cluster, ECS task definition, and ECS service. In a real environment, add a load balancer and domain name if the API must be publicly reachable through HTTPS.
 
-If you do not have an AWS account, do not run `terraform apply`. For this assignment, it is acceptable to include IaC and explain that it is ready for an AWS account with existing VPC subnet IDs, security group IDs, and an ECS task execution role.
+At present, I don’t have an AWS account. Due to time constraints, I haven’t set one up to deploy the workload.
 
 ## Linux Server Deployment
 
 On a Linux server with Docker installed:
 
 ```bash
-git clone <your-repo-url>
-cd <your-repo-name>
+git clone https://github.com/abraghav903/mlops.git
+cd mlops
 docker compose up --build -d
 ```
 
