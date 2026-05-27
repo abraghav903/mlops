@@ -83,6 +83,37 @@ docker build -t nxp-digit-inference:latest .
 docker run --rm -p 8000:8000 nxp-digit-inference:latest
 ```
 
+## Prometheus Monitoring
+
+The API exposes Prometheus metrics at:
+
+```text
+http://localhost:8000/metrics
+```
+
+Run the API and Prometheus together:
+
+```bash
+docker compose up --build
+```
+
+Open Prometheus:
+
+```text
+http://localhost:9090
+```
+
+Useful queries:
+
+```promql
+digit_api_requests_total
+digit_api_predictions_total
+rate(digit_api_requests_total[5m])
+histogram_quantile(0.95, rate(digit_api_request_latency_seconds_bucket[5m]))
+```
+
+Prometheus scrape configuration lives in `monitoring/prometheus.yml`.
+
 ## Model Versioning
 
 Model artifacts are stored under `models/<version>/`. The active model is tracked in `models/registry.json`:
